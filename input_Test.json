@@ -1,0 +1,58 @@
+[
+    {
+        "Name": "Cell Size",
+        "Data": [
+            {
+                "Cell_Size_x": [
+                    30,
+                    20,
+                    10
+                ],
+                "Cell_Size_y": [
+                    20,
+                    30,
+                    10
+                ],
+                "Cell_Size_z": [
+                    30,
+                    10,
+                    20
+                ]
+            }
+        ]
+    },
+    {
+        "Name": "Rotation",
+        "Data": [
+            {
+                "Rotation_x": [
+                    0,
+                    90,
+                    0
+                ],
+                "Rotation_y": [
+                    90,
+                    90,
+                    0
+                ],
+                "Rotation_z": [
+                    0,
+                    0,
+                    90
+                ]
+            }
+        ]
+    },
+    {
+        "Name": "Thickness",
+        "Data": [
+            {
+                "Thickness_Value": [
+                    1,
+                    1.2,
+                    1.3
+                ]
+            }
+        ]
+    }
+]

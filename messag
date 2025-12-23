@@ -1,0 +1,205 @@
+
+
+ ***************************************************************
+ *            ANSYS LEGAL NOTICES                              *
+ ***************************************************************
+ *                                                             *
+ * Copyright 1971-2025 ANSYS, Inc.  All rights reserved.       *
+ * Unauthorized use, distribution or duplication is            *
+ * prohibited.                                                 *
+ *                                                             *
+ * Ansys is a registered trademark of ANSYS, Inc. or its       *
+ * subsidiaries in the United States or other countries.       *
+ * See the ANSYS, Inc. online documentation or the ANSYS, Inc. *
+ * documentation CD or online help for the complete Legal      *
+ * Notice.                                                     *
+ *                                                             *
+ ***************************************************************
+ *                                                             *
+ * THIS ANSYS SOFTWARE PRODUCT AND PROGRAM DOCUMENTATION       *
+ * INCLUDE TRADE SECRETS AND CONFIDENTIAL AND PROPRIETARY      *
+ * PRODUCTS OF ANSYS, INC., ITS SUBSIDIARIES, OR LICENSORS.    *
+ * The software products and documentation are furnished by    *
+ * ANSYS, Inc. or its subsidiaries under a software license    *
+ * agreement that contains provisions concerning               *
+ * non-disclosure, copying, length and nature of use,          *
+ * compliance with exporting laws, warranties, disclaimers,    *
+ * limitations of liability, and remedies, and other           *
+ * provisions.  The software products and documentation may be *
+ * used, disclosed, transferred, or copied only in accordance  *
+ * with the terms and conditions of that software license      *
+ * agreement.                                                  *
+ *                                                             *
+ * ANSYS, Inc. is a UL registered                              *
+ * ISO 9001:2015 company.                                      *
+ *                                                             *
+ ***************************************************************
+ *                                                             *
+ * This product is subject to U.S. laws governing export and   *
+ * re-export.                                                  *
+ *                                                             *
+ * For U.S. Government users, except as specifically granted   *
+ * by the ANSYS, Inc. software license agreement, the use,     *
+ * duplication, or disclosure by the United States Government  *
+ * is subject to restrictions stated in the ANSYS, Inc.        *
+ * software license agreement and FAR 12.212 (for non-DOD      *
+ * licenses).                                                  *
+ *                                                             *
+ ***************************************************************
+
+      Date: 12/21/2025      Time: 20:15:16  
+      ___________________________________________________ 
+     |                                                   |
+     |  LS-DYNA, A Program for Nonlinear Dynamic         |
+     |  Analysis of Structures in Three Dimensions       |
+     |  Date    : 07/09/2025    Time: 09:53:35           |
+     |  Version : smp d R16                              |
+     |  Revision: R16.1-180-gd50332dbe5                  |
+     |  AnLicVer: 2025 R2 (20250506+dl-73-g4dde854)      |
+     |                                                   |
+     |  Features enabled in this version:                |
+     |    Shared Memory Parallel                         |
+     |    CESE CHEMISTRY EM ICFD STOCHASTIC_PARTICLES    |
+     |    FFTW (multi-dimensional FFTW Library)          |
+     |    ARPACK (nonsymmetric eigensolver library)      |
+     |    ANSYSLIC enabled                               |
+     |  Issued by  : ANSYS                               |
+     |                                                   |
+     |  Platform   : WINDOWS X64                         |
+     |  OS Level   : Windows 10  (Build 26100) uam       |
+     |  Compiler   : Intel Fortran Compiler 19.0 SSE2    |
+     |  Hostname   : LegionPete                          |
+     |  Precision  : Double precision (I8R8)             |
+     |                                                   |
+     |  Unauthorized use infringes Ansys Inc. copyrights |
+     |___________________________________________________|
+
+
+ Command line options: i=D:\Modified_Wing\Scripts\WingLattice_v2.k 
+                       ncpu=4 
+                       memory=20m
+
+ Input file: D:\Modified_Wing\Scripts\WingLattice_v2.k                                       
+
+ The native file format       : 64-bit small endian
+ Memory size from command line:    20000000
+ allocating  memory to    20000000 d     1984109 Initial allocation
+
+ ********  notice  ********  notice  ********  notice  ********
+ *                                                            *
+ * This is the LS-DYNA Finite Element code.                   *
+ *                                                            *
+ * Neither LST nor the authors assume any responsibility for  *
+ * the validity, accuracy, or applicability of any results    *
+ * obtained from this system. Users must verify their own     *
+ * results.                                                   *
+ *                                                            *
+ * LST endeavors to make the LS-DYNA code as complete,        *
+ * accurate and easy to use as possible.                      *
+ * Suggestions and comments are welcomed.  Please report any  *
+ * errors encountered in either the documentation or results  *
+ * immediately to LST through your site focus.                *
+ *                                                            *
+ * Copyright (C) 1990-2021                                    *
+ * by Livermore Software Technology, LLC                      *
+ * All rights reserved                                        *
+ *                                                            *
+ ********  notice  ********  notice  ********  notice  ********
+
+ Beginning of keyword reader                                   12/21/25 20:15:16
+ expanding   memory to      127121 d     4181400  
+ expanding   memory to      157121 d     4181400  
+ expanding   memory to      178525 d     4241400  
+ expanding   memory to      207047 d     5086368  
+ expanding   memory to      269047 d     5101368  
+ expanding   memory to      315309 d     6053592  
+ expanding   memory to      352727 d     7936770  
+ expanding   memory to      457349 d     8078809  
+ expanding   memory to      561970 d     8078809  
+
+ Memory required to process keyword     :     561970  
+ Additional dynamic memory required     :    8078874  
+
+ contracting memory to           1 d     6053657 end of keyword reader
+
+ LS-DYNA will perform a structural only analysis 
+
+ D:\Modified_Wing\Scripts\WingLattice_v2.k                               
+                    ls-dyna smp d R16 R16.1_180_d50332d date 07/09/2025
+ 
+ *** Warning 20006 (STR+6)
+     reset D3PLOT output interval from 0. to 0.0000E+00
+ expanding   memory to        2001 d     1984798 material, node and element data
+ expanding   memory to        2071 d     1984813 material properties
+ expanding   memory to        2085 d     5789353 gradient of damage data
+ expanding   memory to        2106 d     7291494 user control for contact interfaces
+ contracting memory to        2086 d     7291495 thermal expansion 0
+ expanding   memory to        2088 d     7291496 cross-sectional force definitions 0
+ expanding   memory to       39506 d     7291511 temp index array for node sorting
+ contracting memory to        2088 d     7328933 just because?
+ expanding   memory to      315951 d     7403782 nodal data
+ expanding   memory to      420572 d     7403782 arbitrary element numbering input
+ contracting memory to        2094 d     9331944 user_define_loading_set
+ expanding   memory to        2095 d     9331944 load curve regularization
+ expanding   memory to        2099 d     9331944 *DEFINE_ELEMENT_DEATH
+ expanding   memory to       77935 d    10064853 implicit contact 1
+ contracting memory to        3099 d    10068774 contact segment data 1
+ expanding   memory to      952321 d    10068774 contact segment data 3
+ contracting memory to        2099 d    10846172 contact definition
+ expanding   memory to        2103 d    10846716 contact friction
+ expanding   memory to        2203 d    10847331 rigid bodies for disp. termination
+ expanding   memory to        2326 d    10412726 save d3plot control data
+
+ initial kinetic energy = 0.00000000E+00
+
+ S t o r a g e   a l l o c a t i o n   
+
+ Memory required to begin solution      :     953K
+ Additional dynamically allocated memory:      13M
+                                   Total:      14M
+       1 t 0.0000E+00 dt 1.38E-07 flush i/o buffers            12/21/25 20:15:16
+       1 t 0.0000E+00 dt 1.38E-07 write d3plot file            12/21/25 20:15:16
+ 
+ *** termination time reached ***
+       1 t 1.3776E-07 dt 1.38E-07 write d3dump01 file          12/21/25 20:15:16
+       1 t 1.3776E-07 dt 1.38E-07 write d3plot file            12/21/25 20:15:16
+
+ N o r m a l    t e r m i n a t i o n                          12/21/25 20:15:16
+
+ S t o r a g e   a l l o c a t i o n   
+
+ Memory required to complete solution   :     953K
+ Additional dynamically allocated memory:      13M
+                                   Total:      14M
+
+ T i m i n g   i n f o r m a t i o n
+                        CPU(seconds)   %CPU  Clock(seconds) %Clock
+  ----------------------------------------------------------------
+  Keyword Processing ... 1.0000E+00   50.00     2.8300E-01   13.68
+    KW Reading ......... 0.0000E+00    0.00     1.3600E-01    6.58
+    KW Writing ......... 0.0000E+00    0.00     1.0000E-02    0.48
+  Initialization ....... 1.0000E+00   50.00     1.7190E+00   83.12
+    Init Proc Phase 1 .. 0.0000E+00    0.00     1.6500E-01    7.98
+    Init Proc Phase 2 .. 0.0000E+00    0.00     2.8000E-02    1.35
+  Element processing ... 0.0000E+00    0.00     2.5000E-02    1.21
+    Solids ............. 0.0000E+00    0.00     2.5000E-02    1.21
+  Binary databases ..... 0.0000E+00    0.00     7.0000E-03    0.34
+  Misc. 1 .............. 0.0000E+00    0.00     2.0000E-03    0.10
+  Misc. 3 .............. 0.0000E+00    0.00     3.2000E-02    1.55
+  ----------------------------------------------------------------
+  T o t a l s            2.0000E+00  100.00     2.0680E+00  100.00
+
+ Problem time       =    1.3776E-07
+ Problem cycle      =         1
+ Total CPU time     =         2 seconds (   0 hours  0 minutes  2 seconds)
+ CPU time per zone cycle  =          0.000 picoseconds
+ Clock time per zone cycle=     630848.492 picoseconds
+
+ Number of CPU's    4
+ NLQ used/max     192/  192
+ Start time   12/21/2025 20:15:16  
+ End time     12/21/2025 20:15:16  
+ Elapsed time       0 second  for       1 cycles using  4 SMP threads
+             (      0 hour   0 minute   0 second )
+
+ N o r m a l    t e r m i n a t i o n                          12/21/25 20:15:16
