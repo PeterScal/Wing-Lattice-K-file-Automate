@@ -1,6 +1,5 @@
 from ansys.dyna.core import Deck
 from ansys.dyna.core import keywords as kwd
-import lsdyna_mesh_reader as mesh
 import os
 import numpy as np
 
@@ -31,83 +30,11 @@ sec.elform = 10 # Constant Stress Solid
 part = kwd.Part(pid=1, mid=mat.mid, secid=sec.secid)
 
 #--------------------------------------------------------------------------------------------------------------------------------------
-# New Deck using mesh reader to find nodes on surface planes
-mesh_deck = mesh.Deck(Input_LatticeFile)
-node_section = mesh_deck.node_sections[0]
-print(node_section)
-
-# Test reading .k file
-print(node_section.coordinates)
-print(node_section.nid)
-
-# Configuration for the surface plane for faom to lattice connection
-x_target = 76.0
-y_min, y_max = -3.897, 17.392
-z_min, z_max = 0.1307, 101.554
-tolerance = 0.1 
-
-# Access coordinates and NIDs from the reader
-coords = node_section.coordinates
-nids = node_section.nid
-
-# Create booleans for each dimension based on your targets
-nodes_x = (coords[:, 0] >= x_target - tolerance) & (coords[:, 0] <= x_target + tolerance)
-nodes_y = (coords[:, 1] >= y_min) & (coords[:, 1] <= y_max)
-nodes_z = (coords[:, 2] >= z_min) & (coords[:, 2] <= z_max)
-
-# Combine booleans to find nodes satisfying all criteria
-full_nodes = nodes_x & nodes_y & nodes_z
-
-# Extract the resulting Node IDs
-target_node_ids_latfoam = nids[full_nodes].tolist()
-
-# List nodes found and used for the node set
-print(f"Found {len(target_node_ids_latfoam)} nodes.")
-print(target_node_ids_latfoam)
-
-#--------------------------------------------------------------------------------------------------------------------------------------
-# Configuration for the surface plane for lattice to UAV Body connection
-x_max = 76.102
-x_min = 0.047
-z_target = 0.3024
-y_min = -5.328
-y_max = 17.908
-
-# Create booleans for each dimension based on your targets
-nodes_z = (coords[:, 2] >= z_target - tolerance) & (coords[:, 2] <= z_target + tolerance)
-nodes_y = (coords[:, 1] >= y_min) & (coords[:, 1] <= y_max)
-nodes_x = (coords[:, 0] >= x_min) & (coords[:, 0] <= x_max)
-
-# Combine booleans to find nodes satisfying all criteria
-full_nodes = nodes_x & nodes_y & nodes_z
-
-# Extract the resulting Node IDs
-target_node_ids_latUAV = nids[full_nodes].tolist()
-
-# List nodes found and used for the node set
-print(f"Found {len(target_node_ids_latUAV)} nodes.")
-print(target_node_ids_latUAV)
-
-#--------------------------------------------------------------------------------------------------------------------------------------
-# Explicitly delete the objects holding file handles
-del mesh_deck
-del node_section
-
-# Add new node set to deck:
-node_set_foam = kwd.SetNodeList(sid=1)
-node_set_foam.nodes = target_node_ids_latfoam
-
-# Add new node set to deck:
-node_set_uav = kwd.SetNodeList(sid=2)
-node_set_uav.nodes = target_node_ids_latUAV
-
-# Extend deck with new keywords
-
-if deck.get_kwds_by_type('MATERIAL') is None and deck.get_kwds_by_type('SECTION') is None and deck.get_kwds_by_type('SET') is None:
-    deck.extend([mat, sec, part, node_set_foam, node_set_uav])
-else:
-    print('Material, Section, or Set keywords already exist in the deck. Check keywoprd notepad.')
+if deck.get_kwds_by_type('MATERIAL') is not None and deck.get_kwds_by_type('SECTION') is not None:
+    print('Material or Section already exist in the deck. Check keywoprd notepad.')
     SystemExit
+else:
+    deck.extend([mat, sec, part])
 
 # Create LS-DYNA input deck
 deck_string = deck.write()

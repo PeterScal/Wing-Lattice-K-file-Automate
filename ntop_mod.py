@@ -4,7 +4,7 @@
 import json, os, subprocess
 import numpy as np
 
-#Assuming this script, ntop file, and json files will be in the same folder
+# Assuming this script, ntop file, and json files will be in the same folder
 Current_Directory = os.path.dirname(os.path.abspath(__file__))
 exePath = r"C:/Program Files/nTopology/nTopology/nTopCL.exe"  #nTopCL path
 nTopFileName = r"WingLattice_v2_CodeTesting.ntop" #nTop notebook file name
