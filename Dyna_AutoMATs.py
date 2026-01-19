@@ -1,42 +1,119 @@
 from ansys.dyna.core import Deck
 from ansys.dyna.core import keywords as kwd
-import os
+import os, sys
 import numpy as np
+import pandas as pd
 
-# Define file paths
-Current_Directory = os.path.dirname(os.path.abspath(__file__))
-Ls_Dyna_Folder = os.path.dirname(Current_Directory)
 
-# Path to the file containing the NODE definitions
-Input_LatticeFile = os.path.join(Ls_Dyna_Folder,"LS-DYNA", "WingLattice_v2.k") 
+def setup_material_section_part(Input_File, Set_Material, Set_Section, Ls_Dyna_Folder):
 
-# Load your existing mesh
-deck = Deck(Input_LatticeFile)
-deck.import_file(Input_LatticeFile)
+    # Load your existing mesh
+    deck = Deck(Input_File)
+    deck.import_file(Input_File)
 
-# Create the Material keyword (MID 1)
-mat = kwd.MatPiecewiseLinearPlasticity(mid=1)
-mat.ro = 1.25e-9
-mat.e = 1.0
-mat.sigy = 0.05
-mat.pr = 0.35
-mat.etan = 0.2
+    # Check which material we are working with:
+    if Set_Material.id == 1:
+        mat = kwd.MatPiecewiseLinearPlasticity(mid=1)
+    if Set_Material.id == 7:
+        mat = kwd.MatCrushableFoam(mid=Set_Material.id)
+        mat.lcid = 12  # Link to crush curve LCID 12
 
-# Create the Section keyword (SECID 3)
-sec = kwd.SectionSolid(secid=3)
-sec.elform = 10 # Constant Stress Solid
+        # Create and add the hardcoded curve keyword for the foam
+        load_curve = kwd.DefineCurve(lcid=12, )
+        load_curve.curves = pd.DataFrame(FOAM_CURVE_LIST, columns=['a1', 'o1'])
+        deck.extend([load_curve])
+        
 
-# Create the Part keyword (PID 1) linking to the Material and Section   
-part = kwd.Part(pid=1, mid=mat.mid, secid=sec.secid)
+    # Set the Material parameters for common properties: 
+    mat.ro = Set_Material.ro
+    mat.e = Set_Material.E
+    mat.pr = Set_Material.pr
 
-#--------------------------------------------------------------------------------------------------------------------------------------
-if deck.get_kwds_by_type('MATERIAL') is not None and deck.get_kwds_by_type('SECTION') is not None:
-    print('Material or Section already exist in the deck. Check keywoprd notepad.')
-    SystemExit
-else:
+    # Set the specific properties based on material type:
+    if Set_Material.id == 1:
+        mat.sigy = Set_Material.sigy
+        mat.etan = Set_Material.etan
+    if Set_Material.id == 7:
+        mat.damp = Set_Material.damp
+        mat.tsc = Set_Material.tsc
+
+    # Create the Section keyword (SECID 3)
+    sec = kwd.SectionSolid(secid=Set_Section.id)
+    sec.elform = Set_Section.elform # Constant Stress Solid
+
+    # Create the Part keyword (PID 1) linking to the Material and Section   
+    part = kwd.Part(pid=Set_Section.partid, mid=mat.mid, secid=sec.secid)
+
+    #--------------------------------------------------------------------------------------------------------------------------------------
+    # First check if Material or section already exist in the deck
+    materials = list(deck.get_kwds_by_type('MAT'))    
+    sections = list(deck.get_kwds_by_type('SECTION'))
+
+    """    # If statement to prevent duplicate material or section addition
+    if materials or sections == True:
+        print('Error: Material or Section already exist in the deck. Check keywoprd notepad.')
+    else:
+        deck.extend([mat, sec, part])
+        print('Material, Section, and Part keywords added successfully.')
+        # Create LS-DYNA input deck
+        deck_string = deck.write()
+        with open(Input_File, "w") as file_handle:
+            file_handle.write(deck_string)
+    """
     deck.extend([mat, sec, part])
-
-# Create LS-DYNA input deck
-deck_string = deck.write()
-with open(Input_LatticeFile, "w") as file_handle:
-    file_handle.write(deck_string)
+    print('Material, Section, and Part keywords added successfully.')
+    # Create LS-DYNA input deck
+    deck_string = deck.write()
+    with open(Input_File, "w") as file_handle:
+        file_handle.write(deck_string)
+        
+FOAM_CURVE_LIST = [
+    [0.0, 0.0], [0.0058701, 1.1099999938e-05], [0.0117612, 3.1999999919e-05], 
+    [0.0176374, 6.0499998654e-05], [0.0235165, 0.00010399999883], [0.0294046, 0.0001559999946], 
+    [0.0352807, 0.00021600000036], [0.0411568, 0.00028800001019], [0.0470509, 0.0003629999992], 
+    [0.0529271, 0.00043799998821], [0.0588032, 0.00047999998787], [0.0646943, 0.00050800002646], 
+    [0.0705764, 0.00053000001935], [0.0764495, 0.00054799998179], [0.0823436, 0.00056299997959], 
+    [0.0882317, 0.00057500001276], [0.0940989, 0.00058499997249], [0.09999, 0.00059499999043], 
+    [0.105878, 0.00060299999313], [0.1117452, 0.00060999998823], [0.1176363, 0.00061799999094], 
+    [0.1235244, 0.00062499998603], [0.1293945, 0.0006300000241], [0.1352886, 0.00063800002681], 
+    [0.1411737, 0.00063999998383], [0.1470469, 0.00064799998654], [0.152923, 0.00065499998163], 
+    [0.15882, 0.00066000001971], [0.1646932, 0.00066499999957], [0.1705783, 0.00066999997944], 
+    [0.1764694, 0.00067500001751], [0.1823395, 0.00067999999737], [0.1882216, 0.00068300002022], 
+    [0.1941157, 0.00068800000008], [0.1999889, 0.00069299997995], [0.205862, 0.00069800001802], 
+    [0.2117621, 0.00069999997504], [0.2176412, 0.00070500001311], [0.2235114, 0.00070999999298], 
+    [0.2294054, 0.00071300001582], [0.2352905, 0.00071799999569], [0.2411666, 0.00072299997555], 
+    [0.2470547, 0.00072499999078], [0.2529369, 0.00073299999349], [0.25881, 0.00073500000872], 
+    [0.2646951, 0.00073999998858], [0.2705832, 0.00074300001143], [0.2764533, 0.00074799999129], 
+    [0.2823474, 0.00075299997116], [0.2882296, 0.00076000002446], [0.2941027, 0.00076500000432], 
+    [0.2999848, 0.00076800002716], [0.3058759, 0.00077500002226], [0.311749, 0.00077799998689], 
+    [0.3176341, 0.00078300002497], [0.3235252, 0.00078800000483], [0.3293984, 0.0007929999847], 
+    [0.3352775, 0.00079800002277], [0.3411686, 0.00080300000263], [0.3470447, 0.0008079999825], 
+    [0.3529238, 0.00081300002057], [0.3588179, 0.00081800000044], [0.364694, 0.0008229999803], 
+    [0.3705642, 0.00082800001837], [0.3764613, 0.00083299999824], [0.3823464, 0.0008379999781], 
+    [0.3882195, 0.00083999999333], [0.3941106, 0.00084799999604], [0.3999867, 0.00085000001127], 
+    [0.4058689, 0.00085499999113], [0.4117569, 0.000859999971], [0.417642, 0.00086500000907], 
+    [0.4235152, 0.00087300001178], [0.4294063, 0.00087799999164], [0.4352943, 0.00088299997151], 
+    [0.4411645, 0.00088800000958], [0.4470556, 0.00089500000468], [0.4529407, 0.00090300000738], 
+    [0.4588138, 0.00091000000248], [0.4646959, 0.00091499998234], [0.470587, 0.00092500000028], 
+    [0.4764572, 0.00092999998014], [0.4823423, 0.00093799998285], [0.4882303, 0.00094499997795], 
+    [0.4941036, 0.00095299998065], [0.4999886, 0.00095999997575], [0.5058827, 0.00096799997846], 
+    [0.5117558, 0.00097499997355], [0.5176349, 0.00098300003447], [0.5235291, 0.00098999997135], 
+    [0.5293992, 0.00099800003227], [0.5352753, 0.00101], [0.5411634, 0.00102], [0.5470455, 0.00103], 
+    [0.5529217, 0.00104], [0.5588128, 0.00105], [0.5646948, 0.00106], [0.570571, 0.00107], 
+    [0.5764591, 0.00108], [0.5823442, 0.00109], [0.5882143, 0.0011], [0.5941084, 0.00111], 
+    [0.5999936, 0.00112], [0.6058607, 0.00113], [0.6117518, 0.00114], [0.6176339, 0.00116], 
+    [0.623507, 0.00117], [0.6293981, 0.00118], [0.6352863, 0.0012], [0.6411564, 0.00121], 
+    [0.6470415, 0.00123], [0.6529355, 0.00125], [0.6588087, 0.00126], [0.6646878, 0.00128], 
+    [0.6705789, 0.0013], [0.676455, 0.00132], [0.6823401, 0.00134], [0.6882282, 0.00136], 
+    [0.6941044, 0.00138], [0.6999835, 0.00141], [0.7058776, 0.00143], [0.7117537, 0.00146], 
+    [0.7176328, 0.00149], [0.7235269, 0.00152], [0.729403, 0.00155], [0.7352762, 0.00158], 
+    [0.7411733, 0.00162], [0.7470494, 0.00166], [0.7529225, 0.0017], [0.7588106, 0.00174], 
+    [0.7646927, 0.00179], [0.7705628, 0.00184], [0.776454, 0.00189], [0.7823421, 0.00195], 
+    [0.7882122, 0.00201], [0.7940943, 0.00208], [0.7999854, 0.00215], [0.8058615, 0.00222], 
+    [0.8117406, 0.0023], [0.8176317, 0.0024], [0.8235078, 0.00249], [0.829393, 0.0026], 
+    [0.8352811, 0.0027], [0.8411542, 0.00285], [0.8470333, 0.00298], [0.8529244, 0.00313], 
+    [0.8588035, 0.0033], [0.8646767, 0.00348], [0.8705708, 0.00368], [0.8764499, 0.0039], 
+    [0.882326, 0.00413], [0.8882171, 0.0044], [0.8940932, 0.00473], [0.8999694, 0.00508], 
+    [0.9058545, 0.00548], [0.9117306, 0.00593], [0.9175978, 0.00648], [0.9234918, 0.0071], 
+    [0.9293739, 0.00783], [0.935241, 0.00873], [0.9411172, 0.00983], [0.9413565, 0.00988]
+]

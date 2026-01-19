@@ -1,21 +1,11 @@
 [
     {
-        "Name": "Cell Size",
+        "Name": "UVW Divisions",
         "Data": [
             {
-                "Cell_Size_x": [30, 20, 10],
-                "Cell_Size_y": [20, 30, 10],
-                "Cell_Size_z": [30, 10, 20]
-            }
-        ]
-    },
-    {
-        "Name": "Rotation",
-        "Data": [
-            {
-                "Rotation_x": [0, 90, 0],
-                "Rotation_y": [90, 90, 0],
-                "Rotation_z": [0, 0, 90]
+                "UVW_DIV_x": [7, 20, 10],
+                "UVW_DIV_y": [3, 30, 10],
+                "UVW_DIV_z": [4, 10, 20]
             }
         ]
     },
@@ -23,7 +13,7 @@
         "Name": "Thickness",
         "Data": [
             {
-                "Thickness_Value": [1, 1.2, 1.3]
+                "Thickness_Value": [1.3, 1.2, 1.3]
             }
         ]
     },
@@ -31,7 +21,17 @@
         "Name": "File Path",
         "Data": [
             {
-                "Lattice_STEP_File_Path": ["D:/Modified_Wing/CAD/Wing_SD7080_6in_EndCut_Flat.STEP"]
+                "Lattice_STEP_File_Path": ["D:/Modified_Wing/CAD/Wing_SD7080_12in_Lattice.STEP"],
+                "Foam_STEP_File_Path": ["D:/Modified_Wing/CAD/Wing_SD7080_12in_Foam.STEP"],
+                "Base_STEP_File_Path": ["D:/Modified_Wing/CAD/Wing_SD7080_12in_Base.STEP"]
+            }
+        ]
+    },
+    {
+        "Name": "Lattice Ratio",
+        "Data": [
+            {
+                "Lattice_Ratio": [4, 3, 4]
             }
         ]
     }

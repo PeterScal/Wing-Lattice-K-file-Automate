@@ -3,38 +3,38 @@
     "inputs": [
         {
             "description": "",
-            "name": "Cell size",
+            "name": "UVW divisions",
             "type": "vector",
-            "units": "mm",
             "value": [
-                10,
-                10,
-                20
+                7,
+                3,
+                4
             ]
         },
         {
             "description": "",
-            "name": "Lattice thickness",
+            "name": "Beam thickness",
             "type": "real",
             "units": "mm",
             "value": 1.3
         },
         {
             "description": "",
-            "name": "Rotation",
-            "type": "vector",
-            "units": "deg",
-            "value": [
-                0,
-                0,
-                90
-            ]
+            "name": "Lattice STEP Path",
+            "type": "file_path",
+            "value": "D:/Modified_Wing/CAD/Wing_SD7080_12in_Lattice.STEP"
         },
         {
             "description": "",
-            "name": "Lattice STEP Path",
+            "name": "Foam STEP Path",
             "type": "file_path",
-            "value": "D:/Modified_Wing/CAD/Wing_SD7080_6in_EndCut_Flat.STEP"
+            "value": "D:/Modified_Wing/CAD/Wing_SD7080_12in_Foam.STEP"
+        },
+        {
+            "description": "",
+            "name": "Base STEP Path",
+            "type": "file_path",
+            "value": "D:/Modified_Wing/CAD/Wing_SD7080_12in_Base.STEP"
         }
     ],
     "title": "Wing Lattice"

@@ -5,83 +5,75 @@ import json, os, subprocess
 import numpy as np
 
 # Assuming this script, ntop file, and json files will be in the same folder
-Current_Directory = os.path.dirname(os.path.abspath(__file__))
-exePath = r"C:/Program Files/nTopology/nTopology/nTopCL.exe"  #nTopCL path
-nTopFileName = r"WingLattice_v2_CodeTesting.ntop" #nTop notebook file name
-nTopFilePath = os.path.join(Current_Directory, nTopFileName)
-Input_File_Name = os.path.join(Current_Directory, "input_template.json")
-Output_File_Name = os.path.join(Current_Directory, "output_template.json")
-Paramter_list_Name = os.path.join(Current_Directory, "Parameter_list.json")
+def set_ntop_params(Current_Directory, Input_Template_Name, Output_Template_Name, data, data_1):
 
-#Index number desiered (change as needed without for loop)
-i = 0
-#Edit json files:
-for i in range(3):
+    exePath = r"C:/Program Files/nTopology/nTopology/nTopCL.exe"  #nTopCL path
+    #nTopFileName = r"WingLattice_v2_CodeTesting.ntop" #nTop notebook file name
+    nTopFolderPath = os.path.dirname(Current_Directory)
+    nTopFilePath = os.path.join(nTopFolderPath, "nTop", "WingLattice_v2.ntop")  #.ntop notebook file path
+
+    #Index number desiered (change as needed without for loop)
+
+    #Edit json files:
 
     #Putting thickness value in template by first opening and reading template
-    with open(Input_File_Name , "r") as f:
-        data = json.load(f)
-    
+        
     #Listing current values already in Ntop File
     print('Current Values for parameters: ')
     print("Cell size (mm): ", data["inputs"][0]['value'])
     print("Lattice Thickness (mm): ", data["inputs"][1]['value'])
     print("Unit Cell Rotation (deg): ", data["inputs"][2]['value'])
 
-    with open(Paramter_list_Name, "r") as f1:
-        data_1 = json.load(f1)
-
     #Edit Cell Size Params
-    cellsize_x = data_1[0]["Data"][0]["Cell_Size_x"][i]
-    cellsize_y = data_1[0]["Data"][0]["Cell_Size_y"][i]
-    cellsize_z = data_1[0]["Data"][0]["Cell_Size_z"][i]
-    cellsize_array = [cellsize_x, cellsize_y, cellsize_z]
+    UVWDIV_x = data_1[0]["Data"][0]["UVW_DIV_x"][0]
+    UVWDIV_y = data_1[0]["Data"][0]["UVW_DIV_y"][0]
+    UVWDIV_z = data_1[0]["Data"][0]["UVW_DIV_z"][0]
+    UVW_array = [UVWDIV_x, UVWDIV_y, UVWDIV_z]
     for item in data["inputs"]:
-        if item["name"] == "Cell size": 
-            item["value"] = cellsize_array  
-    print(cellsize_array)
-    
+        if item["name"] == "UVW divisions": 
+            item["value"] = UVW_array  
+    print(UVW_array)
 
     #Edit beam thickness Params
-    Thickness = data_1[2]["Data"][0]["Thickness_Value"][i]
+    Thickness = data_1[1]["Data"][0]["Thickness_Value"][0]
     for item in data["inputs"]:
-        if item["name"] == "Lattice thickness": 
+        if item["name"] == "Beam thickness": 
             item["value"] = Thickness
     print(Thickness)
 
-
-    #Edit Rotation Params
-    Rotation_x = data_1[1]["Data"][0]["Rotation_x"][i]
-    Rotation_y = data_1[1]["Data"][0]["Rotation_y"][i]
-    Rotation_z = data_1[1]["Data"][0]["Rotation_z"][i]
-    Rotation_array = [Rotation_x, Rotation_y, Rotation_z]
-    for item in data["inputs"]:
-        if item["name"] == "Rotation": 
-            item["value"] = Rotation_array  
-    print(Rotation_array)
-
-
-    #Edit file path
-    NewFilePath = data_1[3]["Data"][0]["Lattice_STEP_File_Path"][0]
+    #Edit Lattice file path
+    Lattice_NewFilePath = data_1[2]["Data"][0]["Lattice_STEP_File_Path"][0]
     for item in data["inputs"]:
         if item["name"] == "Lattice STEP Path": 
-            item["value"] = NewFilePath
-    print(Thickness)
+            item["value"] = Lattice_NewFilePath
+    print("New Lattice Path Made:")
 
+    #Edit Foam file path
+    Foam_NewFilePath = data_1[2]["Data"][0]["Foam_STEP_File_Path"][0]
+    for item in data["inputs"]:
+        if item["name"] == "Foam STEP Path": 
+            item["value"] = Foam_NewFilePath
+    print("New Foam Path Made:")
+
+    #Edit Base file path
+    Base_NewFilePath = data_1[2]["Data"][0]["Base_STEP_File_Path"][0]
+    for item in data["inputs"]:
+        if item["name"] == "Base STEP Path": 
+            item["value"] = Base_NewFilePath
+    print("New Base Path Made:")
 
     #Write all new values to ntop Input file
-    with open(Input_File_Name, "w") as f:
+    with open(Input_Template_Name, "w") as f:
         json.dump(data, f, indent=4)
-
 
     #nTopCL arguments in a list
     Arguments = [exePath]               #nTopCL path
     Arguments.append("-v2")
     Arguments.append("-j")              #json input argument
-    Arguments.append(Input_File_Name)
+    Arguments.append(Input_Template_Name)
     Arguments.append("-s")   #json path
     Arguments.append("-o")              #output argument
-    Arguments.append(Output_File_Name)  #output json path
+    Arguments.append(Output_Template_Name)  #output json path
     Arguments.append(nTopFilePath)      #.ntop notebook file path
 
     #Tell user its loading
